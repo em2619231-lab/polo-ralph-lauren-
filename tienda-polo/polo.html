@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>POLO Ralph Lauren</title>
+<style>
+    body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background: #f0f8ff; color: #333; }
+    header { background: #1e3a5f; color: #fff; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.12); position: sticky; top: 0; z-index: 100; }
+    header h1 { margin: 0; cursor: pointer; font-weight: 600; font-size: 22px; letter-spacing: 1px; user-select: none; color: #87ceeb; }
+    header nav { display:flex; gap:12px; align-items:center; }
+    header nav button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; cursor: pointer; font-size: 16px; padding:6px 12px; border-radius:6px; transition: all 0.2s; }
+    header nav button:hover { background: rgba(255,255,255,0.2); transform: translateY(-1px); }
+    header nav button::after { content: attr(data-count); position: absolute; top: -8px; right: -8px; background: #4682b4; color: white; width: 20px; height: 20px; font-size: 12px; border-radius: 50%; text-align: center; line-height: 20px; font-weight: 600; display: none; }
+    header nav button[data-count]:not([data-count="0"])::after { display: block; }
+
+    #userButtons { display: flex; gap: 8px; align-items: center; margin-right: 10px; }
+    #userName { color: #87ceeb; font-weight: 600; font-size: 14px; display: none; }
+
+    main { padding: 20px; max-width: 1100px; margin: 0 auto 60px auto; }
+
+    footer {
+        background: #1e3a5f;
+        color: white;
+        text-align: center;
+        padding: 18px 0;
+        width: 100%;
+        margin-top: 40px;
+    }
+    footer p { margin: 6px 0; font-size: 14px; }
+    .redes a { color: #b3d9ff; margin: 0 10px; text-decoration: none; font-size: 15px; font-weight: 600; transition: 0.2s; }
+    .redes a:hover { color: white; text-decoration: underline; }
+
+    /* Inicio */
+    #inicio {
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center; 
+        text-align: center;
+        background-color: rgba(255,255,255,0.9);
+        border-radius: 12px; 
+        margin: 20px 0; 
+        color: #1e3a5f;
+        padding: 20px;
+    }
+
+    #inicio h1#tituloRalph {
+        font-size:42px; 
+        font-weight:700; 
+        letter-spacing:6px; 
+        margin-bottom:12px;
+    }
+
+    #logoImagen {
+        max-width: 300px;
+        width: 100%;
+        margin: 20px 0;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    #inicio img {
+        max-width: 180px;
+        margin-top: 20px;
+        border-radius: 8px;
+    }
+
+    #inicio button {
+        display: block; margin: 18px auto 0 auto; background: #1e3a5f; color: white;
+        border: none; padding: 12px 30px; font-size: 1.05em; border-radius: 30px;
+        font-weight: 600; cursor: pointer; transition: 0.2s;
+    }
+
+    #inicio button:hover { background: #2c4f7c; }
+
+    .info-section { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.06); margin-bottom: 20px; }
+    .info-section h3 { color: #1e3a5f; font-size: 1.25em; margin-bottom: 8px; }
+    .info-section p { font-size: 1em; line-height: 1.5; color: #333; }
+
+    /* Catalogo */
+    #catalogo { display: none; margin-top: 18px; }
+    #catalogo.active { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+    .producto { background: white; border-radius: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.06); padding: 12px; display: flex; flex-direction: column; align-items: center; transition: 0.18s; border: 1px solid #e9f3fb; min-height: 360px; }
+    .producto:hover { transform: translateY(-6px); box-shadow: 0 12px 26px rgba(70, 130, 180, 0.08); }
+    .producto img { max-width: 100%; border-radius: 10px; height: 200px; object-fit: cover; margin-bottom: 10px; }
+    .producto h3 { font-size: 18px; margin: 6px 0; color: #1e3a5f; text-align: center; }
+    .producto p { color: #4682b4; font-weight: 700; margin-bottom: 10px; }
+    .producto .btn { background: #1e3a5f; color: white; border: none; padding: 8px 18px; border-radius: 22px; font-weight: 700; cursor: pointer; transition: 0.18s; }
+    .producto .btn:hover { background: #2c4f7c; }
+
+    /* Modales */
+    #modalCarrito, #modalAdmin, #modalTicket, #modalLogin, #modalRegister {
+        display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.65); justify-content: center; align-items: center; z-index: 1200; padding: 18px;
+    }
+    .modal-content { background: white; padding: 22px; width: 100%; max-width: 640px; border-radius: 14px; position: relative; box-shadow: 0 14px 32px rgba(0,0,0,0.12); max-height: 90vh; overflow:auto; }
+    .cerrar { position: absolute; top: 10px; right: 14px; font-size: 22px; cursor: pointer; color: #666; transition: 0.15s; }
+    .cerrar:hover { color: #1e3a5f; }
+
+    /* Admin modal inner */
+    #modalAdmin .admin-box, #modalLogin .admin-box, #modalRegister .admin-box { 
+        width: 100%; max-width: 420px; margin: 0 auto; 
+    }
+    #modalAdmin input, #modalAdmin select, #modalAdmin button,
+    #modalLogin input, #modalLogin button,
+    #modalRegister input, #modalRegister button { 
+        width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; font-size: 16px;
+    }
+    #modalAdmin button, #modalLogin button, #modalRegister button { 
+        background:#1e3a5f; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;
+    }
+    #modalAdmin button:hover, #modalLogin button:hover, #modalRegister button:hover { 
+        background:#2c4f7c;
+    }
+    .switch-modal { text-align:center; margin-top:15px; }
+    .switch-modal a { color:#1e3a5f; text-decoration:none; font-weight:600; }
+    .switch-modal a:hover { text-decoration:underline; }
+
+    /* Estilos para el ticket */
+    .ticket-container {
+        background: white;
+        border: 2px solid #1e3a5f;
+        border-radius: 8px;
+        padding: 20px;
+        max-width: 500px;
+        margin: 20px auto;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .ticket-header {
+        text-align: center;
+        border-bottom: 2px dashed #ccc;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .ticket-header h2 {
+        color: #1e3a5f;
+        margin: 5px 0;
+    }
+    
+    .ticket-info {
+        margin: 15px 0;
+        font-size: 14px;
+    }
+    
+    .ticket-info div {
+        margin: 5px 0;
+    }
+    
+    .ticket-items {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+    }
+    
+    .ticket-items th {
+        background: #f0f8ff;
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .ticket-items td {
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .ticket-total {
+        text-align: right;
+        font-weight: bold;
+        font-size: 18px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 2px dashed #ccc;
+    }
+    
+    .ticket-footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #666;
+    }
+    
+    .ticket-actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .ticket-actions button {
+        background: #1e3a5f;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    
+    .ticket-actions button:hover {
+        background: #2c4f7c;
+    }
+    
+    #mensajeFinal { display:none; padding: 12px; background: #e6ffef; color: #0b6b2e; border-radius: 8px; margin-top: 12px; text-align: center; font-weight:700; }
+
+    @media (max-width:600px){
+        header { padding: 12px; flex-wrap: wrap; }
+        header nav { flex-wrap: wrap; }
+        main { padding: 12px; }
+        #inicio { height: auto; background-size: contain; }
+        .ticket-actions {
+            flex-direction: column;
+        }
+        #userButtons { margin-right: 0; }
+        #logoImagen {
+            max-width: 250px;
+        }
+    }
+</style>
+</head>
+<body>
+<header>
+    <h1 id="logo">POLO Ralph Lauren</h1>
+    <nav>
+        <!-- Botones de usuario -->
+        <div id="userButtons">
+            <button id="loginBtn" title="Iniciar sesión">👤 Login</button>
+            <button id="registerBtn" title="Registrarse">📝 Registro</button>
+            <button id="logoutBtn" title="Cerrar sesión" style="display:none;">🚪 Salir</button>
+            <span id="userName"></span>
+        </div>
+        
+        <button id="adminBtn" title="Panel administrador">⚙ Admin</button>
+        <button id="carritoBtn" data-count="0" title="Ver carrito">🛒</button>
+    </nav>
+</header>
+
+<main>
+    <section id="inicio">
+        <h1 id="tituloRalph">RALPH LAUREN</h1>
+        
+        <!-- Imagen agregada aquí -->
+        <img id="logoImagen" src="data:imagencecyto" alt="POLO RALPH LAUREN Logo">
+        
+        <h2 style="color:#1e3a5f; font-weight:700; margin:0 0 12px 0;">Colección clásica</h2>
+        <p style="max-width:720px">Explora una selección de prendas icónicas — proyecto demo para la práctica.</p>
+        <button id="btnVerCatalogo">Ver catálogo</button>
+        <img src="cecyto.jpg" alt="Imagen de muestra">
+    </section>
+
+    
+
+    <section id="info">
+        <div class="info-section">
+            <h3>Nuestra Historia</h3>
+            <p>Desde su fundación en 1967, Ralph Lauren ha definido el estilo americano clásico, combinando elegancia, autenticidad y tradición.</p>
+        </div>
+        <div class="info-section">
+            <h3>Aviso de Privacidad</h3>
+            <p>En POLO Ralph Lauren valoramos tu privacidad. Los datos personales que proporciones serán utilizados únicamente para procesar tus pedidos y mejorar tu experiencia.</p>
+        </div>
+    </section>
+
+    <section id="catalogo"></section>
+</main>
+
+<!-- Modal Carrito -->
+<div id="modalCarrito">
+    <div class="modal-content">
+        <span class="cerrar" id="cerrarModal">&times;</span>
+        <h2>Tu Carrito</h2>
+        <div id="carritoLista" style="margin:12px 0;"></div>
+        <div id="carritoTotal" style="font-weight:800; margin-bottom:8px;">Total: $0</div>
+        <button id="btnPagar" style="display:none; margin-bottom:12px;">Ir a pagar</button>
+
+        <form id="formPago" style="display:none;">
+            <h3>Información de Pago</h3>
+            <label>Nombre completo:</label>
+            <input type="text" id="nombre" required>
+            <label>Email:</label>
+            <input type="email" id="email" required>
+            <label>Dirección:</label>
+            <input type="text" id="direccion" required>
+            <label>Teléfono:</label>
+            <input type="tel" id="telefono" required>
+            <label>Método de pago:</label>
+            <select id="metodoPago" required>
+                <option value="">Selecciona</option>
+                <option value="tarjeta">Tarjeta</option>
+                <option value="paypal">PayPal</option>
+            </select>
+
+            <div id="campoTarjeta" style="display:none;">
+                <label>Número de tarjeta:</label>
+                <input type="text" id="tarjeta" placeholder="1234 5678 9012 3456">
+            </div>
+
+            <button type="submit">Confirmar pago</button>
+        </form>
+
+        <div id="mensajeFinal">¡Gracias por tu compra! Nos pondremos en contacto pronto.</div>
+    </div>
+</div>
+
+<!-- Modal Admin -->
+<div id="modalAdmin">
+    <div class="modal-content admin-box">
+        <span class="cerrar" id="cerrarAdmin">&times;</span>
+        <h2>Login Administrador</h2>
+        <form id="adminForm">
+            <input id="adminUser" type="text" placeholder="Usuario" required>
+            <input id="adminPass" type="password" placeholder="Contraseña" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <hr style="margin:14px 0;">
+        <h3>Agregar producto</h3>
+        <form id="agregarProductoForm" style="display:none;">
+            <input id="nuevoNombre" type="text" placeholder="Nombre del producto" required>
+            <input id="nuevoPrecio" type="number" placeholder="Precio (ej. 99.99)" step="0.01" required>
+            <input id="nuevaImagen" type="text" placeholder="URL de imagen" required>
+            <button type="submit">Agregar producto</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Login -->
+<div id="modalLogin">
+    <div class="modal-content admin-box">
+        <span class="cerrar" id="cerrarLogin">&times;</span>
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Contraseña" required>
+            <button type="submit">Ingresar</button>
+        </form>
+        <div class="switch-modal">
+            ¿No tienes cuenta? <a href="#" id="goToRegister">Regístrate aquí</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Registro -->
+<div id="modalRegister">
+    <div class="modal-content admin-box">
+        <span class="cerrar" id="cerrarRegister">&times;</span>
+        <h2>Crear Cuenta</h2>
+        <form id="registerForm">
+            <input type="text" id="regNombre" placeholder="Nombre completo" required>
+            <input type="email" id="regEmail" placeholder="Email" required>
+            <input type="password" id="regPassword" placeholder="Contraseña" required>
+            <input type="tel" id="regTelefono" placeholder="Teléfono (opcional)">
+            <input type="text" id="regDireccion" placeholder="Dirección (opcional)">
+            <button type="submit">Crear cuenta</button>
+        </form>
+        <div class="switch-modal">
+            ¿Ya tienes cuenta? <a href="#" id="goToLogin">Inicia sesión aquí</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ticket/Nota de Remisión -->
+<div id="modalTicket">
+    <div class="modal-content">
+        <span class="cerrar" id="cerrarTicket">&times;</span>
+        <div id="ticketContent"></div>
+        <div class="ticket-actions">
+            <button id="btnImprimirTicket">Imprimir Ticket</button>
+            <button id="btnCerrarTicket">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2025 POLO Ralph Lauren — Todos los derechos reservados.</p>
+    <div class="redes">
+        <a href="#" target="_blank">📘 Facebook</a>
+        <a href="#" target="_blank">📸 Instagram</a>
+        <a href="#" target="_blank">🎵 TikTok</a>
+    </div>
+</footer>
+
+<script>
+// ==================== VARIABLES GLOBALES ====================
+let productos = [];
+let carrito = [];
+let esAdmin = false;
+let usuarioActual = null;
+
+// ==================== ELEMENTOS DOM ====================
+const productosContainer = document.getElementById("catalogo");
+const carritoBtn = document.getElementById("carritoBtn");
+const modalCarrito = document.getElementById("modalCarrito");
+const cerrarModal = document.getElementById("cerrarModal");
+const carritoLista = document.getElementById("carritoLista");
+const carritoTotal = document.getElementById("carritoTotal");
+const btnPagar = document.getElementById("btnPagar");
+const formPago = document.getElementById("formPago");
+const mensajeFinal = document.getElementById("mensajeFinal");
+const btnVerCatalogo = document.getElementById("btnVerCatalogo");
+const inicioSection = document.getElementById("inicio");
+const logo = document.getElementById("logo");
+const metodoPagoSelect = document.getElementById("metodoPago");
+const campoTarjeta = document.getElementById("campoTarjeta");
+
+// Admin elements
+const adminBtn = document.getElementById("adminBtn");
+const modalAdmin = document.getElementById("modalAdmin");
+const cerrarAdmin = document.getElementById("cerrarAdmin");
+const adminForm = document.getElementById("adminForm");
+const agregarProductoForm = document.getElementById("agregarProductoForm");
+const adminUser = document.getElementById("adminUser");
+const adminPass = document.getElementById("adminPass");
+const nuevoNombre = document.getElementById("nuevoNombre");
+const nuevoPrecio = document.getElementById("nuevoPrecio");
+const nuevaImagen = document.getElementById("nuevaImagen");
+
+// Ticket elements
+const modalTicket = document.getElementById("modalTicket");
+const cerrarTicket = document.getElementById("cerrarTicket");
+const ticketContent = document.getElementById("ticketContent");
+const btnImprimirTicket = document.getElementById("btnImprimirTicket");
+const btnCerrarTicket = document.getElementById("btnCerrarTicket");
+
+// User elements
+const loginBtn = document.getElementById("loginBtn");
+const registerBtn = document.getElementById("registerBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userName = document.getElementById("userName");
+const modalLogin = document.getElementById("modalLogin");
+const modalRegister = document.getElementById("modalRegister");
+const cerrarLogin = document.getElementById("cerrarLogin");
+const cerrarRegister = document.getElementById("cerrarRegister");
+const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
+const goToRegister = document.getElementById("goToRegister");
+const goToLogin = document.getElementById("goToLogin");
+
+// ==================== FUNCIONES DE USUARIO ====================
+
+// Verificar sesión al cargar
+async function verificarSesion() {
+    try {
+        const response = await fetch('backend/api/usuarios.php?action=check');
+        const data = await response.json();
+        
+        if(data.success) {
+            usuarioActual = data.user;
+            actualizarUIUsuario();
+        }
+    } catch(error) {
+        console.log('No hay sesión activa');
+    }
+}
+
+// Actualizar interfaz de usuario
+function actualizarUIUsuario() {
+    if(usuarioActual) {
+        // Usuario logueado
+        loginBtn.style.display = 'none';
+        registerBtn.style.display = 'none';
+        logoutBtn.style.display = 'block';
+        userName.style.display = 'block';
+        userName.textContent = `👤 ${usuarioActual.nombre}`;
+        
+        // Si es admin
+        if(usuarioActual.tipo === 'admin') {
+            esAdmin = true;
+            adminBtn.style.display = 'block';
+        }
+    } else {
+        // Usuario no logueado
+        loginBtn.style.display = 'block';
+        registerBtn.style.display = 'block';
+        logoutBtn.style.display = 'none';
+        userName.style.display = 'none';
+        userName.textContent = '';
+        esAdmin = false;
+    }
+    mostrarProductos();
+}
+
+// Login de usuario
+async function loginUsuario(email, password) {
+    try {
+        const response = await fetch('backend/api/usuarios.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({action: 'login', email, password})
+        });
+        
+        const data = await response.json();
+        if(data.success) {
+            usuarioActual = data.user;
+            actualizarUIUsuario();
+            modalLogin.style.display = 'none';
+            loginForm.reset();
+            alert(`¡Bienvenido ${usuarioActual.nombre}!`);
+            return true;
+        } else {
+            alert(data.message);
+            return false;
+        }
+    } catch(error) {
+        alert('Error de conexión');
+        return false;
+    }
+}
+
+// Registro de usuario
+async function registrarUsuario(datos) {
+    try {
+        const response = await fetch('backend/api/usuarios.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                action: 'register',
+                nombre: datos.nombre,
+                email: datos.email,
+                password: datos.password,
+                telefono: datos.telefono,
+                direccion: datos.direccion
+            })
+        });
+        
+        const data = await response.json();
+        if(data.success) {
+            usuarioActual = data.user;
+            actualizarUIUsuario();
+            modalRegister.style.display = 'none';
+            registerForm.reset();
+            alert(`¡Cuenta creada! Bienvenido ${usuarioActual.nombre}`);
+            return true;
+        } else {
+            alert(data.message);
+            return false;
+        }
+    } catch(error) {
+        alert('Error de conexión');
+        return false;
+    }
+}
+
+// Logout de usuario
+async function logoutUsuario() {
+    try {
+        const response = await fetch('backend/api/usuarios.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({action: 'logout'})
+        });
+        
+        const data = await response.json();
+        if(data.success) {
+            usuarioActual = null;
+            esAdmin = false;
+            actualizarUIUsuario();
+            alert('Sesión cerrada');
+        }
+    } catch(error) {
+        console.error('Error en logout:', error);
+    }
+}
+
+// ==================== FUNCIONES DE PRODUCTOS ====================
+
+// Cargar productos desde API
+async function cargarProductos() {
+    try {
+        const response = await fetch('backend/api/productos.php');
+        productos = await response.json();
+        mostrarProductos();
+    } catch(error) {
+        console.error('Error cargando productos:', error);
+        // Datos por defecto
+        productos = [
+            { id: 1, nombre: "Polo Básico Azul", precio: 89.99, imagen_url: "https://dtcralphlauren.scene7.com/is/image/PoloGSI/s7-1279327_alternate10?$plpDeskRF$", stock: 50 },
+            { id: 2, nombre: "Polo Ralph Lauren Blanco", precio: 79.99, imagen_url: "https://i.localised.com/img/cc/product/a015d6d1-ef66-4bc5-a60a-e06b573bc73b_LARGE.jpg", stock: 75 },
+            { id: 3, nombre: "Polo Negro Básico", precio: 99.99, imagen_url: "https://dtcralphlauren.scene7.com/is/image/PoloGSI/s7-1279324_alternate10?$plpDeskRF$", stock: 30 },
+            { id: 4, nombre: "Polo Vino Básico", precio: 85.99, imagen_url: "https://ss261.liverpool.com.mx/xl/1158032780.jpg", stock: 45 }
+        ];
+        mostrarProductos();
+    }
+}
+
+// Mostrar productos en catálogo
+function mostrarProductos() {
+    productosContainer.innerHTML = "";
+    productos.forEach(prod => {
+        const div = document.createElement("div");
+        div.className = "producto";
+        div.innerHTML = `
+            <img src="${prod.imagen_url || prod.imagen}" alt="${prod.nombre}" 
+                 onerror="this.src='https://via.placeholder.com/300x300/1e3a5f/ffffff?text=Producto'">
+            <h3>${prod.nombre}</h3>
+            <p>$${parseFloat(prod.precio).toFixed(2)}</p>
+            ${prod.stock ? `<p style="color:#666; font-size:14px;">Stock: ${prod.stock}</p>` : ''}
+            <button class="btn" data-id="${prod.id}">Agregar al carrito</button>
+        `;
+        
+        if(esAdmin) {
+            const btnEliminar = document.createElement("button");
+            btnEliminar.textContent = "Eliminar";
+            btnEliminar.style.background = "#ff4d4f";
+            btnEliminar.style.color = "white";
+            btnEliminar.style.border = "none";
+            btnEliminar.style.padding = "8px 14px";
+            btnEliminar.style.borderRadius = "10px";
+            btnEliminar.style.marginTop = "10px";
+            btnEliminar.style.cursor = "pointer";
+            btnEliminar.addEventListener("click", async (ev) => {
+                ev.stopPropagation();
+                if(confirm(`¿Eliminar ${prod.nombre}?`)) {
+                    await eliminarProducto(prod.id);
+                }
+            });
+            div.appendChild(btnEliminar);
+        }
+        
+        productosContainer.appendChild(div);
+    });
+}
+
+// Eliminar producto (admin)
+async function eliminarProducto(id) {
+    try {
+        const response = await fetch(`backend/api/productos.php?id=${id}`, {method: 'DELETE'});
+        if(response.ok) {
+            productos = productos.filter(p => p.id != id);
+            mostrarProductos();
+        }
+    } catch(error) {
+        console.error('Error eliminando producto:', error);
+    }
+}
+
+// ==================== FUNCIONES DE CARRITO ====================
+
+function actualizarContador() {
+    const count = carrito.reduce((acc, i) => acc + i.cantidad, 0);
+    carritoBtn.setAttribute('data-count', count);
+}
+
+function mostrarCarrito() {
+    carritoLista.innerHTML = "";
+    if(carrito.length === 0) {
+        carritoLista.innerHTML = "<p>El carrito está vacío</p>";
+        btnPagar.style.display = 'none';
+        formPago.style.display = 'none';
+        carritoTotal.textContent = "Total: $0";
+        return;
+    }
+    
+    btnPagar.style.display = 'block';
+    carrito.forEach(item => {
+        const div = document.createElement("div");
+        div.style.display = "flex";
+        div.style.justifyContent = "space-between";
+        div.style.alignItems = "center";
+        div.style.marginBottom = "8px";
+        div.style.padding = "8px";
+        div.style.backgroundColor = "#f8fafc";
+        div.style.borderRadius = "6px";
+        
+        const info = document.createElement("span");
+        info.textContent = `${item.nombre} x${item.cantidad} - $${(item.precio * item.cantidad).toFixed(2)}`;
+        
+        const btnEliminar = document.createElement("button");
+        btnEliminar.textContent = "✕";
+        btnEliminar.style.background = "#ff6b6b";
+        btnEliminar.style.color = "white";
+        btnEliminar.style.border = "none";
+        btnEliminar.style.borderRadius = "50%";
+        btnEliminar.style.width = "24px";
+        btnEliminar.style.height = "24px";
+        btnEliminar.style.cursor = "pointer";
+        btnEliminar.addEventListener("click", () => eliminarDelCarrito(item.id));
+        
+        div.appendChild(info);
+        div.appendChild(btnEliminar);
+        carritoLista.appendChild(div);
+    });
+    
+    const total = carrito.reduce((a, i) => a + i.precio * i.cantidad, 0);
+    carritoTotal.textContent = `Total: $${total.toFixed(2)}`;
+}
+
+function agregarAlCarrito(id) {
+    const prod = productos.find(p => p.id == id);
+    if(!prod) return;
+    
+    const existe = carrito.find(i => i.id == id);
+    if(existe) {
+        if(prod.stock && existe.cantidad >= prod.stock) {
+            alert(`Solo hay ${prod.stock} unidades disponibles`);
+            return;
+        }
+        existe.cantidad++;
+    } else {
+        carrito.push({...prod, cantidad: 1});
+    }
+    
+    actualizarContador();
+}
+
+function eliminarDelCarrito(id) {
+    carrito = carrito.filter(item => item.id !== id);
+    actualizarContador();
+    mostrarCarrito();
+}
+
+// ==================== FUNCIONES DE TICKET ====================
+
+function generarTicket(datosCliente, carritoCompra, folio) {
+    const fecha = new Date();
+    const subtotal = carritoCompra.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+    const iva = subtotal * 0.16;
+    const total = subtotal + iva;
+    
+    let ticketHTML = `
+        <div class="ticket-container">
+            <div class="ticket-header">
+                <h2>POLO Ralph Lauren</h2>
+                <p>NOTA DE REMISIÓN</p>
+                <p><strong>Folio:</strong> ${folio}</p>
+                <p><strong>Fecha:</strong> ${fecha.toLocaleString('es-MX')}</p>
+            </div>
+            
+            <div class="ticket-info">
+                <div><strong>Cliente:</strong> ${datosCliente.nombre}</div>
+                <div><strong>Email:</strong> ${datosCliente.email}</div>
+                <div><strong>Teléfono:</strong> ${datosCliente.telefono}</div>
+                <div><strong>Dirección:</strong> ${datosCliente.direccion}</div>
+                <div><strong>Método de pago:</strong> ${datosCliente.metodoPago}</div>
+            </div>
+            
+            <table class="ticket-items">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cant.</th>
+                        <th>Precio</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    carritoCompra.forEach(item => {
+        ticketHTML += `
+            <tr>
+                <td>${item.nombre}</td>
+                <td>${item.cantidad}</td>
+                <td>$${parseFloat(item.precio).toFixed(2)}</td>
+                <td>$${(item.precio * item.cantidad).toFixed(2)}</td>
+            </tr>
+        `;
+    });
+    
+    ticketHTML += `
+                </tbody>
+            </table>
+            
+            <div class="ticket-total">
+                <div>Subtotal: $${subtotal.toFixed(2)}</div>
+                <div>IVA (16%): $${iva.toFixed(2)}</div>
+                <div style="font-size: 20px; margin-top: 10px; color: #1e3a5f;">
+                    TOTAL: $${total.toFixed(2)}
+                </div>
+            </div>
+            
+            <div class="ticket-footer">
+                <p>¡Gracias por su compra!</p>
+                <p>Para devoluciones o cambios, presente este ticket</p>
+                <p>Contacto: servicio@ralphlauren.com | Tel: 800-123-4567</p>
+            </div>
+        </div>
+    `;
+    
+    return ticketHTML;
+}
+
+async function guardarOrdenEnBD(datosCliente) {
+    try {
+        const response = await fetch('backend/api/ordenes.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                nombre_cliente: datosCliente.nombre,
+                email_cliente: datosCliente.email,
+                telefono_cliente: datosCliente.telefono,
+                direccion_envio: datosCliente.direccion,
+                metodo_pago: datosCliente.metodoPago,
+                productos: carrito.map(item => ({
+                    id: item.id,
+                    nombre: item.nombre,
+                    precio: item.precio,
+                    cantidad: item.cantidad
+                })),
+                subtotal: carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0)
+            })
+        });
+        
+        const data = await response.json();
+        return data.folio || 'PL-' + Date.now();
+    } catch(error) {
+        console.error('Error guardando orden:', error);
+        return 'PL-' + Date.now();
+    }
+}
+
+function imprimirTicket() {
+    const ventana = window.open('', '_blank');
+    ventana.document.write(`
+        <html><head><title>Ticket</title>
+        <style>body{font-family:monospace;padding:20px}</style>
+        </head><body>${ticketContent.innerHTML}</body></html>
+    `);
+    ventana.document.close();
+    ventana.print();
+}
+
+// ==================== EVENT LISTENERS ====================
+
+// Eventos de usuario
+loginBtn.addEventListener('click', () => modalLogin.style.display = 'flex');
+registerBtn.addEventListener('click', () => modalRegister.style.display = 'flex');
+logoutBtn.addEventListener('click', () => {
+    if(confirm('¿Cerrar sesión?')) logoutUsuario();
+});
+
+cerrarLogin.addEventListener('click', () => {
+    modalLogin.style.display = 'none';
+    loginForm.reset();
+});
+
+cerrarRegister.addEventListener('click', () => {
+    modalRegister.style.display = 'none';
+    registerForm.reset();
+});
+
+goToRegister.addEventListener('click', (e) => {
+    e.preventDefault();
+    modalLogin.style.display = 'none';
+    modalRegister.style.display = 'flex';
+});
+
+goToLogin.addEventListener('click', (e) => {
+    e.preventDefault();
+    modalRegister.style.display = 'none';
+    modalLogin.style.display = 'flex';
+});
+
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    await loginUsuario(email, password);
+});
+
+registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const datos = {
+        nombre: document.getElementById('regNombre').value,
+        email: document.getElementById('regEmail').value,
+        password: document.getElementById('regPassword').value,
+        telefono: document.getElementById('regTelefono').value,
+        direccion: document.getElementById('regDireccion').value
+    };
+    await registrarUsuario(datos);
+});
+
+// Eventos productos
+document.addEventListener("click", (e) => {
+    if(e.target.matches(".btn") && e.target.getAttribute("data-id")) {
+        const id = parseInt(e.target.getAttribute("data-id"));
+        agregarAlCarrito(id);
+        mostrarCarrito();
+    }
+});
+
+btnVerCatalogo.addEventListener("click", () => {
+    productosContainer.classList.toggle("active");
+    btnVerCatalogo.textContent = productosContainer.classList.contains("active") 
+        ? "Ocultar catálogo" 
+        : "Ver catálogo";
+});
+
+// Eventos carrito
+carritoBtn.addEventListener("click", () => {
+    modalCarrito.style.display = "flex";
+    mostrarCarrito();
+});
+
+cerrarModal.addEventListener("click", () => modalCarrito.style.display = "none");
+
+// Eventos admin
+adminBtn.addEventListener("click", () => modalAdmin.style.display = "flex");
+cerrarAdmin.addEventListener("click", () => modalAdmin.style.display = "none");
+
+adminForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if(adminUser.value === "admin" && adminPass.value === "1234") {
+        esAdmin = true;
+        agregarProductoForm.style.display = "block";
+        modalAdmin.style.display = "none";
+        mostrarProductos();
+        alert("Modo admin activado");
+    } else {
+        alert("Credenciales incorrectas");
+    }
+});
+
+agregarProductoForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const nuevoProducto = {
+        nombre: nuevoNombre.value,
+        precio: parseFloat(nuevoPrecio.value),
+        imagen_url: nuevaImagen.value,
+        stock: 10,
+        categoria: 'polos'
+    };
+    
+    try {
+        const response = await fetch('backend/api/productos.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(nuevoProducto)
+        });
+        
+        if(response.ok) {
+            await cargarProductos();
+            nuevoNombre.value = "";
+            nuevoPrecio.value = "";
+            nuevaImagen.value = "";
+            alert("Producto agregado");
+        }
+    } catch(error) {
+        alert("Error al agregar producto");
+    }
+});
+
+// Eventos pago
+btnPagar.addEventListener("click", () => formPago.style.display = "block");
+metodoPagoSelect.addEventListener("change", () => {
+    campoTarjeta.style.display = metodoPagoSelect.value === "tarjeta" ? "block" : "none";
+});
+
+formPago.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const datosCliente = {
+        nombre: document.getElementById("nombre").value,
+        email: document.getElementById("email").value,
+        direccion: document.getElementById("direccion").value,
+        telefono: document.getElementById("telefono").value,
+        metodoPago: document.getElementById("metodoPago").value
+    };
+    
+    const folio = await guardarOrdenEnBD(datosCliente);
+    ticketContent.innerHTML = generarTicket(datosCliente, carrito, folio);
+    modalTicket.style.display = "flex";
+    
+    carrito = [];
+    actualizarContador();
+    mostrarCarrito();
+    formPago.style.display = "none";
+    formPago.reset();
+    modalCarrito.style.display = "none";
+});
+
+// Eventos ticket
+cerrarTicket.addEventListener("click", () => modalTicket.style.display = "none");
+btnCerrarTicket.addEventListener("click", () => modalTicket.style.display = "none");
+btnImprimirTicket.addEventListener("click", imprimirTicket);
+
+// Cerrar modales al hacer clic fuera
+window.addEventListener("click", (e) => {
+    if (e.target === modalCarrito) modalCarrito.style.display = "none";
+    if (e.target === modalAdmin) modalAdmin.style.display = "none";
+    if (e.target === modalTicket) modalTicket.style.display = "none";
+    if (e.target === modalLogin) {
+        modalLogin.style.display = "none";
+        loginForm.reset();
+    }
+    if (e.target === modalRegister) {
+        modalRegister.style.display = "none";
+        registerForm.reset();
+    }
+});
+
+// Logo scroll
+logo.addEventListener("click", () => inicioSection.scrollIntoView({behavior: "smooth"}));
+
+// ==================== INICIALIZACIÓN ====================
+
+// Al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    verificarSesion();
+    cargarProductos();
+});
+</script>
+</body>
+</html>
